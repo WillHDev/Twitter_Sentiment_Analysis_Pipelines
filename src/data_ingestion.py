@@ -25,7 +25,18 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     try:
         df.drop(columns=['tweet_id'], inplace=True)
         final_df = df[df['sentiment'].isin(['happiness', 'sadness'])]
-        final_df['sentiment'].replace({'happiness': 1, 'sadness': 0}, inplace=True)
+        # this didn't work: 
+        # final_df.loc[:, 'sentiment'] = final_df['sentiment'].replace({'happiness': 1, 'sadness': 0})
+
+        # original: final_df['sentiment'].replace({'happiness': 1, 'sadness': 0}, inplace=True)
+
+        # final_df.replace({'sentiment': {'happiness': 1, 'sadness': 0}}, inplace=True)
+
+        # final_df['sentiment'] = final_df['sentiment'].replace({'happiness': 1, 'sadness': 0})
+
+        final_df.loc[:, 'sentiment'] = final_df['sentiment'].replace({'happiness': 1, 'sadness': 0})
+
+
         return final_df
     except KeyError as e:
         print(f"Error: Missing column {e} in the dataframe.")
